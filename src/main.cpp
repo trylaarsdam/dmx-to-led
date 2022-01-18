@@ -3,7 +3,9 @@
 #include <Adafruit_NeoPixel.h>
 
 #define LEDPIN 8
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(10, LEDPIN, NEO_GRB + NEO_KHZ800);
+#define NUMPIXELS 60
+
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUMPIXELS, LEDPIN, NEO_GRB + NEO_KHZ800);
 
 void setup() {
   // put your setup code here, to run once:
@@ -16,10 +18,11 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
-
-  strip.setPixelColor(1, strip.Color(0, DMXSerial.read(29), 0)); // Green
-  strip.setPixelColor(5, strip.Color(255, 0, 0)); // Green
+  // for loop iterate up to numpixels
+  for (int i = 0; i < NUMPIXELS; i++) {
+    strip.setPixelColor(i, strip.Color(DMXSerial.read((i * 3) + 1), DMXSerial.read((i * 3) + 2), DMXSerial.read((i * 3) + 3)));
+  }
   strip.show();
 
-  delay(100);
-} 
+  delay(35);
+}
